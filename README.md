@@ -1,4 +1,4 @@
-#Installation
+# Installation
 ```
 gnome-extensions install -f gnome-shell-extension-maximize-to-empty-workspace.zip
 ```
