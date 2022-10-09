@@ -27,15 +27,15 @@ const _windowids_size_change = {};
 
 const _window_delay_time = 500
 
-function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
-
 class Extension {
  
     constructor() {
     }
     
+    sleep(time){
+        return new Promise((resolve) => setTimeout(resolve, time));
+    }
+
     // First free workspace on the specified monitor
     getFirstFreeMonitor(manager,mMonitor) {
         const n = manager.get_n_workspaces();
@@ -107,7 +107,7 @@ class Extension {
                         //manager.reorder_workspace(manager.get_workspace_by_index(firstfree),current+1);
                         //manager.get_workspace_by_index(current+1).activate(global.get_current_time());
                         
-                            sleep(_window_delay_time).then(() => {
+                            this.sleep(_window_delay_time).then(() => {
                                 // insert existing window on next monitor (each other workspace is moved one index further)
                                 manager.reorder_workspace(manager.get_workspace_by_index(firstfree),current);
                                 // move the other windows to their old places
@@ -120,7 +120,7 @@ class Extension {
                     }
                 else if (current>firstfree)
                     {
-                        sleep(_window_delay_time).then(() => {
+                        this.sleep(_window_delay_time).then(() => {
                             // show window on next free monitor (doesn't happen with dynamic workspaces)
                             manager.reorder_workspace(manager.get_workspace_by_index(current),firstfree);
                             manager.reorder_workspace(manager.get_workspace_by_index(firstfree+1),current);
@@ -144,7 +144,7 @@ class Extension {
                 const wListfirstfree = manager.get_workspace_by_index(firstfree).list_windows().filter(w => w!==win && !w.is_always_on_all_workspaces());
                 if (current<firstfree)
                     {
-                        sleep(_window_delay_time).then(() => {
+                        this.sleep(_window_delay_time).then(() => {
                             manager.reorder_workspace(manager.get_workspace_by_index(firstfree),current);
                             manager.reorder_workspace(manager.get_workspace_by_index(current+1),firstfree);
                             // move the other windows to their old places
@@ -156,7 +156,7 @@ class Extension {
                     }
                 else if (current>firstfree)
                     {
-                        sleep(_window_delay_time).then(() => {
+                        this.sleep(_window_delay_time).then(() => {
                             manager.reorder_workspace(manager.get_workspace_by_index(current),firstfree);
                             manager.reorder_workspace(manager.get_workspace_by_index(firstfree+1),current);
                             // move the other windows to their old places
@@ -351,7 +351,6 @@ class Extension {
     disable() {
         // remove array and disconect
         _handles.splice(0).forEach(h => global.window_manager.disconnect(h));
-        
         this._mutterSettings = null;
     }
 }
